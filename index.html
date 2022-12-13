@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<title>Project 2</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="lib/bindings/utils.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+  crossorigin="anonymous"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+  crossorigin="anonymous"
+></script>
+<body>
+  <div class="w3-teal" style="height:85px">
+    <div class="w3-container" style="padding-top: 20px;">
+      <center><h1>Hierarchical Deep-Fusion Framework for CAD of Lung Tumors</h1></center>
+    </div>
+  </div>
+  <div class="w3-sidebar w3-bar-block" style="width:200px;right:0;" id="mySidebar">
+    <a href="index.html" class="w3-bar-item w3-button">Home</a>
+    <a href="xy_slice.html" class="w3-bar-item w3-button">XY Slice</a>
+    <a href="xz_slice.html" class="w3-bar-item w3-button">XZ Slice</a>
+    <a href="yz_slice.html" class="w3-bar-item w3-button">YZ Slice</a>
+    <a href="xy_plane.html" class="w3-bar-item w3-button">XY Plane</a>
+    <a href="xz_plane.html" class="w3-bar-item w3-button">XZ Plane</a>
+    <a href="yz_plane.html" class="w3-bar-item w3-button">YZ Plane</a>
+    <a href="volume.html" class="w3-bar-item w3-button">Volume</a>
+  </div>
+  <div class="w3-main" style="margin-right:200px">
+
+    <style>
+      #mynetwork {
+        width: 100%;
+        height: 750px;
+        background-color: #EEE9E9;
+        position: relative;
+        float: left;
+        overflow-y: scroll;
+        overflow-x: auto;
+      }   
+    </style>
+<div class="w3-container" id="mynetwork">
+  <h2>&emsp;Introduction</h2>
+  <p>
+    &ensp;"Anything that grows without limit, cannot exist." That is a quote 
+    from my undergraduate calculus professor, Dr. Tilak Dealwis. What I find most interesting 
+    about that quote is how applicable it is to other aspects of life. 
+    From the largest animals to the smallest cells in our body, nothing 
+    can grow limitlessly forever. When cells begin to replicate without limit 
+    they are referred to cancerous cells, and if left unchecked, this 
+    seemingly infinite growth will become the cells' ultimate demise. In 
+    recent years we have found ways detect this disease using bone scans, 
+    PET scans, CT scans, and many more, but today we're going to focus on an 
+    automated method of detecting lung cancer in CT scans using deep learning. 
+
+    <br><br>&ensp;At the heart of a neural network is a perceptron. Perceptrons 
+    contain a set of weights by which a given input is multiplied by. Next, 
+    these products are summed together and passed through an activation 
+    function. Though Frank Rosenblatt designed only a single perceptron, 
+    researchers over years found that by using more than one perceptron at a 
+    time we are able to create non-linear functions that better fit our data. 
+    However, a primary issue with these perceptrons is that they are 
+    computationally expensive and for this reason, at their time of 
+    introduction in 1957 researchers weren't able to tackle the problems 
+    related to image processing that we will be looking at today. Each of these 
+    networks comprise a larger network, but are made up of multiple 
+    layers of the simple perceptron introduced by Rosenblatt. 
+  </p>
+  <h2>&emsp;The Model and Data</h2>
+  <p>
+    &ensp;Our network is trained on more than two thousand CT scans, and
+    each scan is of the form (56x56x6). Additionally, we have three perspectives
+    of each set of lungs. The first perspective views the lungs from the front, 
+    as though you are looking at a person face-to-face. We refer to this perspective
+    as the XY perspective. Next we have the XZ perspective. This image views the
+    lungs from the side, as though you are facing a person's shoulder. Finally, 
+    the YZ perspective view the lungs from above. Each CT scan is also accompanied 
+    by a label indicating whether or not lungs contained a cancerous region. While 
+    this is the data the network was trained on, our visualizations focus on the 
+    weights or edges of the network since these are what allow us to learn about 
+    what the network looks like. 
+
+    <br><br>&ensp;Now that we have an understanding of how the data is structured, 
+    we can discuss the model. Hierarchical deep-fusion learning takes these three 
+    dimensional images from each individual perspective and sends them through a 
+    set of networks before combining the output of each network and passing it into
+    the final layer. Start with the XY perspective, we take each slice of the 3D 
+    image such that we have a 2D image of the form (56x56). This means that for each 
+    CT scan that is input to this XY-Slice model, we will receive six probabilities 
+    indicating whether or not the image contains a tumor. Next, we will repeat this 
+    process for both the XZ and YZ perspectives, training a new neural network for 
+    each along the way. Before we move on to the next set of models, I would like to 
+    mention that the input to these "slice" models contains 3136 pixels, however, 
+    when developing the accompanying visualizations we found some limitations
+    to the PyVis framework. For one, it takes nearly an hour for the process to 
+    translate the data into an adjacency matrix since it does so in-place and not parallel. 
+    Second, the Vis.js framework, upon which PyVis is built, fails to effeciently render 
+    this many nodes at once. For these reasons we do not display the input layer at the 
+    slice level, however, all other visualizations will contain their repsective input 
+    nodes. We will go into more details on the caveats of PyVis and Vis.js along with 
+    some possible alternatives, at the end of this article and the associated presentation.
+    The next set of networks, referred to as the Plane networks, will pick up where the 
+    last three left off. Each perspective will take in the six individual outputs all at 
+    once and pass them through a series of layers before returning a single probability 
+    for the given perspective as a whole. Finally, we have reached our Volume level 
+    network. Instead of taking in six features, it will use each of the probabilities 
+    from our prior networks, the XY, XZ, and YZ Plane, networks.
+
+    <br><br>&ensp;Seems pretty simple, right? We're just passing the input from one 
+    network to the next. But how do we decide how many nodes should be in each network? 
+    What about the layers? How many layers should each network have? We set up 
+    parameters to determine a minimum and maximum number of nodes and layers, and 
+    from there the model will incrementally add nodes and layers comparing the performance 
+    of each with the overall best performing model each iteration. If the new model 
+    has more performance than it replaces the best model and is saved for later use,
+    else the framework continues searching until the maximum parameteres are reached. 
+    For this reason, you will notice that many of the models have unique shapes when 
+    compared to one another. One of the more difficult tasks in deep learning is 
+    developing an understanding for what these black-boxes are doing. Our visualizations 
+    aim to provide insight to how each netowrk works at the perspective levels. 
+    A particular point of interest is pruning. When certain weights are close to zero
+    we can try removing them from the network in an attempt to improve efficiency, since
+    they contribute so little to overall outcome.
+  </p>
+  <h2>&emsp;Problems, Caveats, and Improvements for the Future</h2>
+  <p>
+    &ensp;Initially, we had set out to simply view how certain data distributions change 
+    the edges or weights of a neural network. However, it was brought to our attention 
+    that we should likely look for a dataset that may be a bit more interesting. With 
+    this in mind, we decided that it would be best to break down a complex neural network 
+    in such a way that is both easy for a user to digest and useful to a researcher when 
+    fine-tuning the network. Upon pivoting to this project, we quickly realized that 
+    working with raw data to develop a structured graph made up of layers was far more 
+    complicated than we had initially realized. We turned to NetworkX, a graphing 
+    framework, to make designing each graph a bit easier. We were able to shrink 
+    the size of the size of the 3136 input nodes for the slice layers such that the 
+    visualization was digestable and at least somewhat pleasant to look at. However, 
+    as we moved into the next stage of our project, developing dynamic visualizations, 
+    we came across a fork in the road. NetworkX supports a myriad of frameworks for 
+    developing dynamic, interactive visuals of graphs, two of which are D3 and PyVis. 
+    D3 is solid, well-built framework with a strong community behind it and PyVis, on 
+    the other hand, is an interesting framework built on the Vis.js api but has only a 
+    small community. Since we had already had the opportunity to try D3, we decided 
+    to give PyVis a chance... who knows, maybe it's a great framework that has just 
+    yet to receive the same levels of recognition as D3. 
+
+    <br><br>&ensp;After working with PyVis and its parent framework Vis.js, I can assure 
+    you it is certainly not operating at the same caliber as D3. However, before you 
+    write this little framework off to the bin, I would like to tell you about some what 
+    it does really well. For starters, it has direct integration with NetworkX, 
+    whereas D3 requires you to first dump your data to a json file before you can begin 
+    working on your graph. Speaking of saving data, when it comes to NetworkX and D3, they are 
+    on the ball! PyVis, on the other hand, lags behind a bit since there is no native way 
+    to save your PyVis data to a json file, csv, parquet, or really any file other than an 
+    html file. And even though the data is saved in this file, it's in a way trapped there 
+    because it has already been dumped into Vis.js which also lacks a simple, native 
+    data-saving feature. But as I said, it's not all bad! With PyVis and Vis.js we were 
+    able to implement numerous hover and select events in relatively little time when 
+    compared to D3. For example, in our visualizations when we hover over a node, after 
+    200 ms we are shown the node's layer number and title, along with each of its associated 
+    weights, which are listed in the same order that they appear. So as far as rapid 
+    development goes, PyVis and Vis.js certainly win out over D3. But the little victories 
+    end there. As I previously mentioned there came a point at which we realized this 
+    little framework wouldn't be able to provide us with the tools we needed, such as 
+    a popup box to clearly display the selected node name and all of its associated attributes. 
+    Or when we decided it would make sense to provide our users with a color scale displaying 
+    our cool color gradients that we had created in Python, we thought that the customizations 
+    offered in D3 might also be available in Vis.js or PyVis, but alas, this little framework 
+    had become our demise. Not only did PyVis and Vis.js not have a method for creating 
+    our popup table or color scale, but they also had no way of allowing us to export our 
+    data so that we could pick up in D3 where they had left off... Though we may not have been 
+    able to provide all of the details that we desired, we were able to learn something about 
+    all of these tools. As for PyVis and Vis.js, together they create a wonderful framework for 
+    prototyping dynamic visualizations of graphs in particular. I could possibly even see myself 
+    using PyVis during the development of these networks for a quick and easy visualization 
+    to help develop my understanding of the network when fine-tuning. However, when it comes 
+    to delivering a beautiful, full-featured visualization to clients or in preparation 
+    for a public presentation, D3 and NetworkX are most certainly the best options.
+  </p>
+
+  <h2>&emsp;Contributions</h2>
+  <p>Sam Hickey:
+    <br>&ensp;- Extracted the weights from the network
+    <br>&ensp;- Preprocessed the raw data
+    <br>&ensp;- Developed the initial NetworkX Visualizations
+    <br>&ensp;- Built four of the seven PyVis/Vis.js sub-network Visualizations
+    <br>&ensp;- Standardized the web-pages and setup the hosting
+    <br>&ensp;- Wrote the article
+    <br>&ensp;- Recorded the video
+  </p>
+  <p>
+    Michael Black
+    <br>&ensp;- Contributed to the proposal
+    <br>&ensp;- Developed three of the seven PyVis/Vis.js sub-network Visualizations
+    <br>&ensp;- Created and Customized the initial template for the website
+  </p>
+</div>
+
+</div>
+
+<script>
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+<style>
+  .footer {
+    padding-top: 1px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: gray;
+    color: white;
+    text-align: center;
+  }
+</style>
+<div class="footer">
+  <center><p>Sam Hickey | Michael Black</p></center>
+</div>
+</body>
+</html>
