@@ -19,6 +19,7 @@
     integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
     crossorigin="anonymous"
   ></script>
+  
   <style type="text/css">
     #mynetwork {
         width: 100%;
@@ -28,7 +29,6 @@
         float: left;
     }
   </style>
-  
   <body>
     <div class="w3-teal" style="height:85px">
       <div class="w3-container" style="padding-top: 20px;">
@@ -44,6 +44,7 @@
       <a href="xz_plane.html" class="w3-bar-item w3-button">XZ Plane</a>
       <a href="yz_plane.html" class="w3-bar-item w3-button">YZ Plane</a>
       <a href="volume.html" class="w3-bar-item w3-button">Volume</a>
+      
     </div>
     <div class="w3-main" style="margin-right:200px">
     <style>
@@ -59,7 +60,9 @@
       }
     </style>
     <div class="card" style="width: 100%">
-        <div id="mynetwork" class="card-body"></div>
+        <div id="mynetwork" class="card-body">
+          
+        </div>
     </div>
     <div class="footer">
       <center><p>Sam Hickey | Michael Black</p></center>
@@ -84,7 +87,19 @@
             function drawGraph() {
                 var container = document.getElementById('mynetwork');
                 // parsing and collecting nodes and edges from the python
-                nodes = new vis.DataSet([{"color": "slategray", "font": {"color": "white"}, "id": 0, "label": 0, "layer": 1, "physics": false, "shape": "dot", "size": 41, "title": "L1N1\nWeights:\n-0.42505\n0.95748\n0.96392\n-0.53531", "x": -567.0, "y": 368.25}, {"color": "slategray", "font": {"color": "white"}, "id": 3, "label": 3, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N1\nWeights:\n-0.60411", "x": 0.0, "y": 552.375}, {"color": "slategray", "font": {"color": "white"}, "id": 4, "label": 4, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N2\nWeights:\n0.92876", "x": 0.0, "y": 184.125}, {"color": "slategray", "font": {"color": "white"}, "id": 5, "label": 5, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N3\nWeights:\n0.91125", "x": 0.0, "y": -184.125}, {"color": "slategray", "font": {"color": "white"}, "id": 6, "label": 6, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N4\nWeights:\n-0.56296", "x": 0.0, "y": -552.375}, {"color": "slategray", "font": {"color": "white"}, "id": 1, "label": 1, "layer": 1, "physics": false, "shape": "dot", "size": 41, "title": "L1N2\nWeights:\n-0.37471\n0.76623\n0.76605\n-0.35271", "x": -567.0, "y": 0.0}, {"color": "slategray", "font": {"color": "white"}, "id": 2, "label": 2, "layer": 1, "physics": false, "shape": "dot", "size": 41, "title": "L1N3\nWeights:\n-0.11204\n0.62195\n0.63181\n-0.26154", "x": -567.0, "y": -368.25}, {"color": "slategray", "font": {"color": "white"}, "id": 7, "label": 7, "layer": 3, "physics": false, "shape": "dot", "size": 41, "title": "L3N1\nWeights:\n0.92756", "x": 567.0, "y": 0.0}, {"color": "slategray", "font": {"color": "white"}, "id": 8, "label": 8, "layer": 4, "physics": false, "shape": "dot", "size": 41, "title": "L4N1\nWeights:", "x": 1134.0, "y": 0.0}]);
+                nodes = new vis.DataSet([
+                  {"color": "slategray", "font": {"color": "white"}, "id": 0, "layer": 1, "physics": false, "shape": "dot", "size": 41, "title": "L1N1\nWeights:\n-0.42505\n0.95748\n0.96392\n-0.53531", "x": -567.0, "y": 368.25},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 3, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N1\nWeights:\n-0.60411", "x": 0.0, "y": 552.375},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 4, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N2\nWeights:\n0.92876", "x": 0.0, "y": 184.125},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 5, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N3\nWeights:\n0.91125", "x": 0.0, "y": -184.125},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 6, "layer": 2, "physics": false, "shape": "dot", "size": 41, "title": "L2N4\nWeights:\n-0.56296", "x": 0.0, "y": -552.375},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 1, "layer": 1, "physics": false, "shape": "dot", "size": 41, "title": "L1N2\nWeights:\n-0.37471\n0.76623\n0.76605\n-0.35271", "x": -567.0, "y": 0.0},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 2, "layer": 1, "physics": false, "shape": "dot", "size": 41, "title": "L1N3\nWeights:\n-0.11204\n0.62195\n0.63181\n-0.26154", "x": -567.0, "y": -368.25},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 7, "layer": 3, "physics": false, "shape": "dot", "size": 41, "title": "L3N1\nWeights:\n0.92756", "x": 567.0, "y": 0.0},
+                  {"color": "slategray", "font": {"color": "white"}, "id": 8, "layer": 4, "physics": false, "shape": "dot", "size": 41, "title": "L4N1\nWeights:", "x": 1134.0, "y": 0.0},
+                  {"color": "blue", "font": {"color": "black", "size": 30}, "id": -1, "label": "Positive Weight", "layer": -1, "physics": false, "shape": "square", "size": 30, "title": "Negative Weights", "x": 1134.0, "y": -600.0},
+                  {"color": "red", "font": {"color": "black", "size": 30}, "id": -2, "label": "Negative Weight", "layer": -1, "physics": false, "shape": "square", "size": 30, "title": "Positive Weights", "x": 1134.0, "y": -450.0}
+                ]);
                 edges = new vis.DataSet([{"color": "#0b00f4", "from": 0, "title": -0.53531, "to": 3, "width": 9}, {"color": "#ff0000", "from": 0, "title": 0.96392, "to": 4, "width": 9}, {"color": "#fe0001", "from": 0, "title": 0.95748, "to": 5, "width": 9}, {"color": "#1d00e2", "from": 0, "title": -0.42505, "to": 6, "width": 9}, {"color": "#2900d6", "from": 1, "title": -0.35271, "to": 3, "width": 9}, {"color": "#df0020", "from": 1, "title": 0.76605, "to": 4, "width": 9}, {"color": "#df0020", "from": 1, "title": 0.76623, "to": 5, "width": 9}, {"color": "#2500da", "from": 1, "title": -0.37471, "to": 6, "width": 9}, {"color": "#3800c7", "from": 2, "title": -0.26154, "to": 3, "width": 9}, {"color": "#c90036", "from": 2, "title": 0.63181, "to": 4, "width": 9}, {"color": "#c70038", "from": 2, "title": 0.62195, "to": 5, "width": 9}, {"color": "#5000af", "from": 2, "title": -0.11204, "to": 6, "width": 9}, {"color": "#0000ff", "from": 3, "title": -0.60411, "to": 7, "width": 9}, {"color": "#f90006", "from": 4, "title": 0.92876, "to": 7, "width": 9}, {"color": "#f60009", "from": 5, "title": 0.91125, "to": 7, "width": 9}, {"color": "#0700f8", "from": 6, "title": -0.56296, "to": 7, "width": 9}, {"color": "#f90006", "from": 7, "title": 0.92756, "to": 8, "width": 9}]);
                 nodeColors = {};
                 allNodes = nodes.get({ returnType: "Object" });

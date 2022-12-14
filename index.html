@@ -75,7 +75,7 @@
     networks comprise a larger network, but are made up of multiple 
     layers of the simple perceptron introduced by Rosenblatt. 
   </p>
-  <h2>&emsp;The Model and Data</h2>
+  <h2>&emsp;The Model, Training Data, and the Main Course: Weights</h2>
   <p>
     &ensp;Our network is trained on more than two thousand CT scans, and
     each scan is of the form (56x56x6). Additionally, we have three perspectives
@@ -187,6 +187,67 @@
     for a public presentation, D3 and NetworkX are most certainly the best options.
   </p>
 
+  <h2>&emsp;Questions Along the Way</h2>
+  <p>
+    &ensp;Q1: What does Hierarchical Deep-Fusion Learning look like?
+    <br>&ensp;A1: In our case it is seven networks tied together by their outputs. However, 
+    HDFL does not appear the same every situation. For example, if we have a sequences of images 
+    from only one perspective, say maybe XY, then we would simply have only two networks. However, 
+    once we add a second perspective we must also add three networks since we are required to 
+    combine the output of the Plane-level models. 
+
+    <br><br>&ensp;Q2: How do we know if the weights are contributing or if the network is 
+    simply gobbling up compute as more nodes are added?
+    <br>&ensp;A2: Since the edges are colored based on their value, we can determine that dark 
+    weights have less effect on the outcome of the model than brighter colored weights. Additionally, 
+    red weights represent positive values and blue weights represent negative values. 
+
+    <br><br>&ensp;Q3: While having weights greater than 0 represented as red edges and less than 0 
+    represented as blue edges does tell me a bit about the relationship each weight has with the data, 
+    it does not tell me how strong the relationship is. How can I determine the strength or magnitude 
+    of the relationship that each edge has with the data? 
+    <br>A3: We decided to implement a custom color in Python that allows weights which are highly positive 
+    to be bright red, weights that are slightly positive or close to zero are dark red or maroon, 
+    and when a weight is negative we apply the same principle only using the color blue as the baseline 
+    instead. 
+
+    <br><br>&ensp;Q4: Broadening the scope of our previous question, what is the relationship of the 
+    perspectives (XY, XZ, YZ) and levels (Slice, Plane, Volume), not just each individual weight, 
+    with regards to the data? 
+    
+    <br>&ensp;A4: Let us address each individual subnetwork. 
+    <br> Slice-Level Models
+    <br>- The XY-Slice network has nearly zero negative negative weights. This leads us to believe that the 
+    this perspective has a mostly positive relationship with the input data.
+    <br>- The XZ-Slice is nearly the complete opposite from the XY-Slice model as it has mostly negative weights, 
+    leading us to assume that it has a strong inverse relationship with the input data, since the edges are 
+    mostly bright blue. 
+    <br>- The YZ-Slice model is actually the most balanced between the three Slice-level models. Additionally, 
+    we should note that while it does have more nodes than the other two layers, it also has more purple edges, 
+    and this tells us that we may be able to reduce the number of nodes given that its edges are close to zero.
+    An excellent example of this is node L4N1 in the bottom right corner of the visualization.
+    <br><br> Plane-Level Models
+    <br>- The XY-Plane model starts off HOT with many of the edges being bright red at input. However, 
+    the as the layers progress, the edges seem to cool off, and by the time we reach our output layer 
+    we have but only one node that has a strong relationship with the data. If we look at the second to last 
+    layer we can see that the nodes at the top and bottom are producing dead weights which are close to zero. 
+    We can either prune these weights by setting them directly to zero or since there are only two strong 
+    inputs to that node, we could simply remove this layer altogether with little repercussions in regards to 
+    performance. 
+    <br>- The XZ-Plane also starts off hot, much like the XY-Plane model, however, it seems to carry the 
+    inverse relationships, or blue edges, further than our XY-Model. For this reason, we would likely 
+    look to pruning the weights or removing the two dead nodes in the top of the middle two layers (L3N4 &
+    L4N2) instead of trying to remove an entire layer like we did with the previous model.
+    <br>- The YZ-Plane model goes a step further than the XZ model and once again manages to create a 
+    well balenced structure. Of the entire model only a single weight is worth pruning since its value is 
+    between -0.01 and 0.01. 
+
+    <br><br> Volume-Level Model
+    <br>- The Volume level model creates a true symphony of mathematics as it wastes not a single weight with 
+    all values being greater than 0.1 or less than -0.1 and only one value being below an absolute of 0.25.
+
+  </p> 
+
   <h2>&emsp;Contributions</h2>
   <p>Sam Hickey:
     <br>&ensp;- Extracted the weights from the network
@@ -203,6 +264,8 @@
     <br>&ensp;- Developed three of the seven PyVis/Vis.js sub-network Visualizations
     <br>&ensp;- Created and Customized the initial template for the website
   </p>
+
+
 </div>
 
 </div>
